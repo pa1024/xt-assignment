@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "heroku-postbuild": "npm run build",
-    "test": "mocha --require babel-register test/App.test.js"
+    "test": "cross-env NODE_ENV=test mocha --require babel-register test/App.test.js"
   },
   "dependencies": {
     "axios": "^0.20.0",
@@ -25,6 +25,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.2.0",
+    "cross-env": "^7.0.2",
     "mocha": "^8.2.0",
     "mocha-jsdom": "^2.0.0"
   }
