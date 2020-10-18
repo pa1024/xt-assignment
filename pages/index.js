@@ -117,7 +117,7 @@ function Home({ data }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`https://api.spaceXdata.com/v3/launches?limit=100`)
+  const res = await fetch(`https://api.spaceXdata.com/v3/launches?limit=20`)
   const data = await res.json() 
   return {props: { data }}
 }
