@@ -7,8 +7,13 @@
   align-items: center;
 }
 
+.text {
+  width:100%;
+  display: flex;
+}
+
 .main {
-  padding: 5rem 0;
+  padding: 1rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,7 +54,7 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
 .title,
@@ -71,19 +76,42 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
+.sections {
+  display: block;
+  max-width: 1440px;
+}
+
 .grid {
   display: flex;
+  flex-wrap: wrap;
+  margin-top: 3rem;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
-  margin-top: 3rem;
+}
+
+.filter {
+  margin: 4rem 1rem;
+  padding: 0.5rem;
+  max-width: 17rem;
+  height: auto;
+  max-height: 54rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.filterBtn {
+  margin: 0.5rem;
 }
 
 .card {
-  margin: 1rem;
-  flex-basis: 45%;
-  padding: 1.5rem;
+  margin: 0.5rem;
+  width: 16rem;
+  height: 30rem;
+  padding: 0.5rem;
   text-align: left;
   color: inherit;
   text-decoration: none;
@@ -101,22 +129,92 @@
 
 .card h3 {
   margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .card p {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.5;
+}
+
+.card-body {
+  padding: 1rem 0;
+}
+
+.card-body.card-title {
+  color: blue;
 }
 
 .logo {
   height: 1em;
 }
 
-@media (max-width: 600px) {
+.filterTitle {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 1.4rem;
+}
+
+.loading {
+  font-size: 1.5rem;
+  display: block;
+  height: 1rem;
+}
+
+@media (min-width: 700px) {
+  .grid {
+    width: 100%
+  }
+
+  .card {
+    max-width: 14rem;
+  }
+
+  .filter {
+    max-width: 15rem;
+    padding: 0;
+  }
+
+  .sections {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
   .grid {
     width: 100%;
-    flex-direction: column;
+  }
+
+  .filter {
+    max-width: 16rem;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 14rem;
+  }
+
+  .sections {
+    display: flex;
+  }
+}
+
+@media (min-width: 1440px) {
+  .grid {
+    width: 100%;
+  }
+
+  .filter {
+    max-width: 18rem;
+    padding: 1rem
+  }
+
+  .card {
+    max-width: 16rem;
+  }
+
+  .sections {
+    display: flex;
   }
 }

@@ -1,65 +1,125 @@
 import Head from 'next/head'
+import { useState } from 'react'
+import Details from '../components/Details'
+import { Button } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
+import api from '../api/api'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+function Home({ data }) {
+  let [responseData, setResponseData] = useState('')
+  let [success, setSuccess] = useState('')
+  let [land, setLand] = useState('')
+  let [message, setMessage] = useState('')
+  let [initailRender, setInitialRender] = useState('true')
+
+  const updatePage = (e, value) => {
+    e.preventDefault()
+
+    setMessage('Loading...')
+
+    const query = {
+      limit: 100,
+      launch_year: value,
+      launch_success: success,
+      land_success: land,
+    }
+    api.getData(query)
+    .then((response) => {
+      if (response && response.data && response.data.length > 0) {
+        setMessage('')
+        setResponseData(response.data)
+        console.log("Response: " + responseData)
+      } else {
+        setResponseData('')
+        setMessage('No Data Available...')
+      }
+    })
+    .catch((error) => {
+      console.log("Error: ", error)
+    })
+  }
+
+  const onClick = (e, value) => {
+    setInitialRender(false)
+    updatePage(e, value)
+  }
+  
+  const years = []
+  const cards = []
+  for (let i = 2006; i <= 2020; i++) {
+    years.push(<Button className={styles.filterBtn}
+      variant={"success"} 
+      value={i} 
+      onClick={(e) => onClick(e, e.target.value)}>{i}</Button>)
+  }
+  if (initailRender) {
+    console.log("init render ", initailRender)
+    for (let i = 0; i < data.length; i++) {
+      cards.push(<Details className={styles.card} data={data[i]}></Details>)
+    }
+  } else {
+    for (let i = 0; i < responseData.length; i++) {
+      cards.push(<Details className={styles.card} data={responseData[i]}></Details>)
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>SpaceX Assignment</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          SpaceX Launch Programs
         </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={styles.loading}>{message}</div>
+      
+        <div className={styles.sections}>
+          <Card className={styles.filter}>
+            <Card.Body>
+              <Card.Title>Filters</Card.Title>
+              <p className={styles.filterTitle}>Launch Year</p>
+              <div>
+                {years}
+              </div>
+              <p className={styles.filterTitle}>Successful Launch</p>
+              <div>
+                <Button variant="success" value={true} className={styles.filterBtn}
+                  onClick={(e) => setSuccess(e.target.value)}>True</Button>
+                <Button variant="success" value={false} className={styles.filterBtn}
+                  onClick={(e) => setSuccess(e.target.value)}>False</Button>
+              </div>
+              <p className={styles.filterTitle}>Successful Landing</p>
+              <div>
+                <Button variant="success" value={true} className={styles.filterBtn}
+                  onClick={(e) => setLand(e.target.value)}>True</Button>
+                <Button variant="success" value={false} className={styles.filterBtn}
+                  onClick={(e) => setLand(e.target.value)}>False</Button>
+              </div>
+            </Card.Body>
+          </Card>
+          <div className={styles.grid}>
+              {cards}
+          </div>
         </div>
+        
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
+        <h3>Developed by: </h3>
+        <p>Pooja Ashoka</p>
       </footer>
     </div>
   )
 }
+
+export async function getStaticProps() {
+  const res = await fetch(`https://api.spaceXdata.com/v3/launches?limit=100`)
+  const data = await res.json() 
+  return {props: { data }}
+}
+
+export default Home
