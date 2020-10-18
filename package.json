@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
     "test": "cross-env NODE_ENV=test mocha --require babel-register test/App.test.js"
   },
