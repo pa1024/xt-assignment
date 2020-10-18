@@ -23,4 +23,4 @@ npm run test
 
 ## Deploy on heroku
 
-The app is deployed in heroku
+The app is deployed in heroku (https://xt-spacex-program.herokuapp.com/)
